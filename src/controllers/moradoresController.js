@@ -1,6 +1,7 @@
 const database = require('../services/database')
 
 const { validateNome, validateEdfCadastrado } = require('../utils/fieldsvalidationUtils')
+const { serverError } = require ('../utils/httpstatusvalidationUtils')
 
 exports.getAllMoradores = async (req, res) => {
     try {
@@ -8,7 +9,7 @@ exports.getAllMoradores = async (req, res) => {
         res.status(200).json({ success: true, data: result.rows });
     } catch (error) {
         console.log(error);
-        res.status(500).json({ success: false, error: 'Server error!' });
+        serverError(res)
     }
 }
 
@@ -22,7 +23,7 @@ exports.getMorador = async (req, res) => {
         res.status(200).json({ success: true, data: result.rows });
     } catch (error) {
         console.log(error)
-        res.status(500).json({ success: false, error: 'Server error!' });
+        serverError(res)
     }
 }
 
@@ -52,7 +53,7 @@ exports.createMorador = async (req, res) => {
         })
      return res.status(201).json({ succes: true, data: result.rows[0] });
     } catch (error) {
-        return res.status(500).json({ succes: false, error: 'Server error!' });
+        serverError(res)
     }
 }
 
@@ -90,7 +91,7 @@ exports.updateMorador = async (req, res) => {
         return res.status(200).json({ succes: true, data: result.rows[0]} );
 
     } catch (error) {
-        return res.status(500).json({ succes: false, error: 'Server error!' })
+        serverError(res)
     }
 }
 
@@ -111,6 +112,6 @@ exports.deleteMorador = async (req, res) => {
 
         return res.status(200).json({ success: true, message: 'Morador deleted' })
     } catch (error) {
-        return res.status(500).json({ succes: false, error: 'Server error!' })
+        serverError(res)
     }
 }

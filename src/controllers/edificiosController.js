@@ -1,6 +1,7 @@
 const database = require('../services/database')
 
 const { validateNome, validateLocalizacao, validateCnpj, validateImagem } = require('../utils/fieldsvalidationUtils')
+const { serverError } = require ('../utils/httpstatusvalidationUtils')
 
 exports.getAllEdificios = async (req, res) => {
     try {
@@ -8,7 +9,7 @@ exports.getAllEdificios = async (req, res) => {
         res.status(200).json({ success: true, data: result.rows });
     } catch (error) {
         console.log(error)
-        res.status(500).json({ success: false, error: 'Something went wrong' });
+        serverError(res)
     }
 }
 
@@ -25,7 +26,7 @@ exports.getEdificio = async (req, res) => {
 
         return res.status(200).json({ succes: true, data: result.rows[0] });
     } catch (error) {
-        return res.status(500).json({ succes: false, error: 'Server error!' })
+        serverError(res)
     }
 }
 
@@ -61,7 +62,7 @@ exports.createEdificio = async (req, res) => {
 
         return res.status(201).json({ succes: true, data: result.rows[0] });
     } catch (error) {
-        return res.status(500).json({ succes: false, error: 'Server error!' });
+        serverError(res)
     }
 }
 
@@ -104,7 +105,7 @@ exports.updateEdificio = async (req, res) => {
         return res.status(200).json({ succes: true, data: result.rows[0] });
 
     } catch (error) {
-        return res.status(500).json({ succes: false, error: 'Server error!' })
+        serverError(res)
     }
 }
 
@@ -121,7 +122,7 @@ exports.deleteEdificio = async (req, res) => {
 
         return res.status(200).json({ success: true, message: 'Edificio deleted' })
     } catch (erro) {
-        return res.status(500).json({ succes: false, error: 'Server error!' })
+        serverError(res)
     }
 }
 
