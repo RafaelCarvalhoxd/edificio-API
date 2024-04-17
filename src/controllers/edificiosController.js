@@ -78,7 +78,7 @@ exports.updateEdificio = async (req, res) => {
         })
 
         if (existsResult.rows[0].exists) {
-            return res.status(409).json({ succes: false, error: ` ${req.body.name} already exists` })
+            return res.status(409).json({ succes: false, error: ` CNPJ: ${req.body.cnpj} already exists` })
         }
 
         const result = await database.query({

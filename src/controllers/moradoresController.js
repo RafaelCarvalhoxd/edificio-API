@@ -31,12 +31,12 @@ exports.createMorador = async (req, res) => {
     validateEdfCadastrado(req, res);
     
     const existsResult = await database.pool.query({
-            text: 'SELECT EXISTS (SELECT * FROM edificio WHERE id = $1)',
+            text: 'SELECT EXISTS (SELECT * FROM edificio WHERE id_edificio = $1)',
             values: [req.body.edf_cadastrado]
         });
 
         if (!existsResult.rows[0].exists) {
-            return res.status(422).json({ succes: false, error: 'Edificio already exists!' });
+            return res.status(422).json({ succes: false, error: 'Edificio not found!' });
         }
     
     try {
@@ -62,24 +62,24 @@ exports.updateMorador = async (req, res) => {
         }
 
         const existsResult = await database.pool.query({
-            text: 'SELECT EXISTS (SELECT * FROM edificio WHERE id_morador = $1)',
+            text: 'SELECT EXISTS (SELECT * FROM edificio WHERE id_edificio = $1)',
             values: [req.body.edf_cadastrado]
         });
 
         if (!existsResult.rows[0].exists) {
-            return res.status(422).json({ succes: false, error: 'Edificio not found' });
+            return res.status(422).json({ succes: false, error: 'Edificio not found!' });
         }
     
     try {
         const result = await database.query({
             text: `UPDATE morador
                     SET edf_cadastrado = $1, nome = $2, descricao = $3
-                    WHERE id = $4
+                    WHERE id_morador = $4
                     RETURNING *`,
             values: [
                 req.body.edf_cadastrado,
                 req.body.nome,
-                req.params.descricao,
+                req.body.descricao,
                 req.params.id
             ]
         })
